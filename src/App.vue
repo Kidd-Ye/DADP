@@ -1,23 +1,47 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div id="app" :style="paddingStyle">
+    <nav-menu></nav-menu>
     <router-view/>
   </div>
 </template>
 
 <script>
+import navMenu from './components/nav-menu.vue';
+import { mapState } from 'vuex';
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    navMenu
+  },
+  computed: {
+    ...mapState(['topMenuVisible', 'loadingMaskVisible', 'loadingMaskText', 'userInfo']),
+    isLoginPage (){
+      return ['login'].includes(this.$route.name);
+    },
+    paddingStyle (){
+      return {
+        paddingTop: '72px',
+        paddingLeft: 0,
+        paddingRight: 0,
+        paddingBottom: 0
+      };
+    },
+  },
 }
 </script>
 
-<style>
+<style lang= "less">
+@import "../style/variable.less";
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+  position: relative;
+  overflow-y: hidden;
+  background-color: #F2F2F2;
+  #nav-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }
-</style>

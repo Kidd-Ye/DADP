@@ -3,13 +3,31 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import util from './util'
+import store from './store'
+import iview from 'iview';
+import './style/index.less';
 
-Vue.config.productionTip = false
+function installPlugin(plugin, name){
+  window[name] = plugin;
+  plugin.install = function(Vue, options){
+    Vue.prototype[name] = this;
+  };
+  Vue.use(plugin);
+}
 
-/* eslint-disable no-new */
-new Vue({
+// 工具类模块
+installPlugin(util, 'util');
+
+Vue.use(iview);
+
+const app = new Vue({
   el: '#app',
+  store,
   router,
-  components: { App },
-  template: '<App/>'
-})
+  render: h => {
+    return h(App);
+  }
+});
+
+window.app = app;
